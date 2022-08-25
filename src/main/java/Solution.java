@@ -21,7 +21,18 @@ public class Solution {
    * @return массив из двух индексов
    */
   public int[] twoSum(int[] nums, int target) {
-    //todo: write your code here
+    if (nums != null) {
+      for (int i = 0; i < nums.length; i++) {
+        for (int j = i + 1; j < nums.length; j++) {
+          try {
+            int sum = Math.addExact(nums[i], nums[j]);
+            if (sum == target) {
+              return new int[] {i, j};
+            }
+          } catch (ArithmeticException ignore) {}
+        }
+      }
+    }
     return new int[0];
   }
 
@@ -41,7 +52,40 @@ public class Solution {
    * @return заполненный массив
    */
   public int[][] fill(int length, int width) {
-    //todo: write your code here
-    return new int[0][0];
+    int[][] matrix;
+    if (width <= 0 || length <= 0) {
+      return new int[0][0];
+    }
+    try {
+      matrix = new int[width][length];
+    } catch (OutOfMemoryError e) {
+      return new int[0][0];
+    }
+    int lastElement = length * width;
+    int t = 0;
+    int b = width - 1;
+    int l = 0;
+    int r = length - 1;
+    int val = 1;
+
+    while (val <= lastElement) {
+      for (int i = l; i <= r && val <= lastElement; i++) {
+        matrix[t][i] = val++;
+      }
+      t++;
+      for (int i = t; i <= b && val <= lastElement; i++) {
+        matrix[i][r] = val++;
+      }
+      r--;
+      for (int i = r; i >= l && val <= lastElement; i--) {
+        matrix[b][i] = val++;
+      }
+      b--;
+      for (int i = b; i >= t && val <= lastElement; i--) {
+        matrix[i][l] = val++;
+      }
+      l++;
+    }
+    return matrix;
   }
 }
